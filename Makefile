@@ -2,7 +2,7 @@ COMPOSE_RUN_TERRAFORM = docker-compose run --rm tf
 COMPOSE_RUN_BASH = docker-compose run --rm --entrypoint bash tf
 COMPOSE_RUN_AWS = docker-compose run --rm --entrypoint aws tf
 
-DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t weather-app-pimentel:1
+DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t weather-app-pimentel:1 .
 DOCKER_TAG = docker tag weather-app-pimentel:1 152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app:1
 DOCKER_PUSH = docker push 152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app:1
 

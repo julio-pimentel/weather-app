@@ -1,8 +1,12 @@
-include .env
-
 COMPOSE_RUN_TERRAFORM = docker-compose run --rm tf
 COMPOSE_RUN_BASH = docker-compose run --rm --entrypoint bash tf
 COMPOSE_RUN_AWS = docker-compose run --rm --entrypoint aws tf
+
+ACCOUNT_ID
+IMAGE_NAME = "weather-app-pimentel"
+REGION = "us-east-1"
+REPO_NAME = "julio-pimentel-node-weather-app"
+
 
 DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t $(IMAGE_NAME):1 .
 DOCKER_TAG = docker tag $(IMAGE_NAME):1 $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):1

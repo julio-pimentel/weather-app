@@ -5,6 +5,7 @@ COMPOSE_RUN_AWS = docker-compose run --rm --entrypoint aws tf
 DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t weather-app-pimentel:1 .
 DOCKER_TAG = docker tag weather-app-pimentel:1 152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app:1
 DOCKER_PUSH = docker push 152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app:1
+ECR_COMMAND = ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 152848913167.dkr.ecr.us-east-1.amazonaws.com
 
 
 # Terraform IaC 
@@ -65,7 +66,7 @@ tag_doc:
 
 .PHONY: login_aws
 login_aws:
-	$(COMPOSE_RUN_AWS) ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 152848913167.dkr.ecr.us-east-1.amazonaws.com
+	$(COMPOSE_RUN_AWS) $(ECR_COMMAND)
 
 .PHONY: push_doc
 push_doc:

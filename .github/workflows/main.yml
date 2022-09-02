@@ -46,6 +46,10 @@ jobs:
       AWS_SESSION_TOKEN:  ${{ secrets.AWS_SESSION_TOKEN }} 
     steps:
     - uses: actions/checkout@v2
+    - name: Terraform_Plan
+      run: make run_plan
+    - name: Terraform_Apply
+      run: make run_apply  
     - name: Build_Container
       run: make push_docker_image
 

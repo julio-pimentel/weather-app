@@ -45,6 +45,10 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_SESSION_TOKEN:  ${{ secrets.AWS_SESSION_TOKEN }} 
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+      IMAGE_NAME : "weather-app-pimentel"
+      REGION : "us-east-1"
+      REPO_NAME : "julio-pimentel-node-weather-app"
+
     steps:
     - uses: actions/checkout@v2
     - name: Build_Container

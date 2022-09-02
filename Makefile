@@ -2,6 +2,12 @@ COMPOSE_RUN_TERRAFORM = docker-compose run --rm tf
 COMPOSE_RUN_BASH = docker-compose run --rm --entrypoint bash tf
 COMPOSE_RUN_AWS = docker-compose run --rm --entrypoint aws tf
 
+DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t weather-app-pimentel:1
+DOCKER_TAG = docker tag weather-app-pimentel:1 152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app:1
+DOCKER_PUSH = docker push 152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app:1
+
+
+# Terraform IaC 
 .PHONY: run_plan
 run_plan: init plan
 
@@ -44,3 +50,23 @@ destroy_apply:
 list_bucket: 
 	$(COMPOSE_RUN_AWS) s3 ls
 
+# Docker Image 
+
+.PHONY: push_docker_image
+push_docker_image: build_doc tag_doc login_aws push_doc
+
+.PHONY: build_doc
+build_doc:
+	$(DOCKER_BUILD)
+
+.PHONY: tag_doc
+tag_doc:
+	$(DOCKER_TAG)
+
+.PHONY: login_aws
+login_aws:
+	$(COMPOSE_RUN_AWS) ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 152848913167.dkr.ecr.us-east-1.amazonaws.com
+
+.PHONY: push_doc
+push_doc:
+	$(DOCKER_PUSH)

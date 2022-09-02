@@ -4,8 +4,8 @@ COMPOSE_RUN_AWS = docker-compose run --rm --entrypoint aws tf
 
 DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t $(IMAGE_NAME):1 .
 DOCKER_TAG = docker tag $(IMAGE_NAME):1 $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):1
-DOCKER_PUSH = docker push $(IMAGE_NAME).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):1
-ECR_COMMAND = ecr get-login-password --region $(REGION) | docker login --username AWS --password-stdin $(IMAGE_NAME).dkr.ecr.$(REGION).amazonaws.com
+DOCKER_PUSH = docker push $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):1
+ECR_COMMAND = ecr get-login-password --region $(REGION) | docker login --username AWS --password-stdin $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com
 
 
 # Terraform IaC 

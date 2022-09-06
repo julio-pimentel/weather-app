@@ -13,21 +13,32 @@ variable "tags" {
 
 #VPC 
 variable "vpc_id" {
-  default = "vpc-0080912e6f08f16c0"
+  default = "vpc-0e238da83f0d928f6"
 }
 
 
 #Public subnets
 variable "pub_cidr_id_1" {
-  default = "subnet-04c80065ce75d366f"
+  default = "subnet-04afe9c2b6fa1ee93"
 }
 
 variable "pub_cidr_id_2" {
-  default = "subnet-04b94ba6fb5168113"
+  default = "subnet-0c481b787b399df51"
 }
 
 variable "pub_cidr_id_3" {
-  default = "subnet-0e438071567f0aa7b"
+  default = "subnet-0dc3d3632742237f5"
+}
+
+#Security groups
+variable "alb_sg_id" {
+  type = string
+  default = "sg-064e9fd7c459db204"
+}
+
+variable "ecs_tasks_sg_id" {
+  type = string
+  default = "sg-08dbf103e44d499ed"
 }
 
 #ALB
@@ -39,17 +50,6 @@ variable "alb_name" {
 variable "alb_tg_name" {
   type = string
   default = "alb-tg-weather-pimentel"
-}
-
-#Security groups
-variable "alb_sg_id" {
-  type = string
-  default = "sg-076b7dfb1a5d47ae4"
-}
-
-variable "ecs_tasks_sg_id" {
-  type = string
-  default = "sg-088dc32f4062299ec"
 }
 
 #ECS

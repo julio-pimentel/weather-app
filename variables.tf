@@ -36,6 +36,11 @@ variable "alb_name" {
   default = "weather-app-pimentel-alb"
 }
 
+variable "alb_tg_name" {
+  type = string
+  default = "alb-tg-weather-pimentel"
+}
+
 #Security groups
 variable "alb_sg_id" {
   type = string

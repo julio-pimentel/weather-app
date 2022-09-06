@@ -1,3 +1,8 @@
+#VPC
+variable "vpc_id" {
+  type = string
+}
+
 #Public subnet CIDRs
 variable "pub_cidr_id_1" {
   type = string
@@ -20,11 +25,11 @@ variable "alb_sg_id" {
   type = string
 }
 
-variable "vpc_id" {
+variable "alb_tg_name" {
   type = string
 }
 
-variable "alb_tg_name" {
-  type = string
-  default = "alb-tg-weather-pimentel"
+#Container
+variable "container_port" {
+
 }

@@ -12,8 +12,11 @@ module "alb" {
   pub_cidr_id_1 = var.pub_cidr_id_1
   pub_cidr_id_2 = var.pub_cidr_id_2
   pub_cidr_id_3 = var.pub_cidr_id_3
+
   alb_name = var.alb_name
+  alb_tg_name = var.alb_tg_name
   alb_sg_id = var.alb_sg_id
+  container_port = var.container_port
 }
 
 module "ecs" {

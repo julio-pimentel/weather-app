@@ -1,3 +1,15 @@
+resource "aws_alb_target_group" "alb_tg" {
+  name = var.alb_tg_name
+  target_type = "ip"
+  port = var.container_port
+  protocol = "HTTP"
+  vpc_id = var.vpc_id
+
+  tags = {
+    Name = var.alb_tg_name
+  }
+}
+
 resource "aws_alb" "alb" {
   name = var.alb_name
   internal = false
@@ -9,17 +21,6 @@ resource "aws_alb" "alb" {
 
   tags = {
     Name = var.alb_name
-  }
-}
-
-resource "aws_alb_target_group" "alb_tg" {
-  target_type = "ip"
-  port = 80
-  protocol = "HTTP"
-  vpc_id = var.vpc_id
-
-  tags = {
-    Name = var.alb_tg_name
   }
 }
 

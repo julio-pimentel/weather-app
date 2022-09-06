@@ -26,7 +26,7 @@ variable "ecs_service_name" {
 
 }
 
-variable "ecs_tasks_sg_id" {
+variable "ecs_tasks_sg" {
 
 }
 

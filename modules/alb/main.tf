@@ -3,7 +3,7 @@ resource "aws_alb" "alb" {
   internal = false
   load_balancer_type = "application"
   security_groups = [var.alb_sg_id]
-  subnets = [var.pub_cidr_id_1, var.pub_cidr_id_2, var.pub_cidr_id_3]
+  subnets = [var.pub_cidr_id_1, var.pub_cidr_id_2]
 
   enable_deletion_protection = false
 

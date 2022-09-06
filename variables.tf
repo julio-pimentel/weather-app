@@ -27,7 +27,7 @@ variable "pub_cidr_id_2" {
 }
 
 variable "pub_cidr_id_3" {
-  default = "	subnet-0e438071567f0aa7b"
+  default = "subnet-0e438071567f0aa7b"
 }
 
 #ALB

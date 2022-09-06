@@ -79,4 +79,4 @@ destroy_docker_image: init destroy_doc
 
 .PHONY: destroy_doc
 destroy_doc:
-	$(DOCKER_DESTROY)
+	$(COMPOSE_RUN_AWS) $(DOCKER_DESTROY)

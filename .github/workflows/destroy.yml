@@ -38,8 +38,6 @@ jobs:
       run: make run_destroy_apply 
 
   destroy_container:
-    environment:
-      name: approval
     needs: terraform_destroy_apply
     runs-on: ubuntu-latest
     env:

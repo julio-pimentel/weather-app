@@ -28,7 +28,7 @@ module "ecs" {
 
   ecs_cluster_name = var.ecs_cluster_name
   ecs_service_name = var.ecs_service_name
-  ecs_tasks_sg_id = var.ecs_tasks_sg_id
+  ecs_tasks_sg = [var.ecs_tasks_sg_id]
   ecs_task_family = var.ecs_task_family
   container_port = var.container_port
   container_cpu = var.container_cpu

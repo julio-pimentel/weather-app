@@ -30,8 +30,6 @@ variable "pub_cidr_id_3" {
   default = "	subnet-0e438071567f0aa7b"
 }
 
-
-
 #ALB
 variable "alb_name" {
   type = string
@@ -40,6 +38,6 @@ variable "alb_name" {
 
 variable "alb_sg_id" {
   type = string
-  default = "weather-app-pimentel-alb-sg"
+  default = "sg-076b7dfb1a5d47ae4"
 }
 

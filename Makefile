@@ -6,7 +6,7 @@ DOCKER_BUILD = docker build -f ./weather-app-dockerfile -t $(IMAGE_NAME):1 .
 DOCKER_TAG = docker tag $(IMAGE_NAME):1 $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):1
 DOCKER_PUSH = docker push $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):1
 ECR_COMMAND = ecr get-login-password --region $(REGION) | docker login --username AWS --password-stdin $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com
-
+DOCKER_DESTROY = ecr batch-delete-image --repository-name $(REPO_NAME) --image-ids imageTag="1" 
 
 # Terraform IaC 
 .PHONY: run_plan
@@ -53,6 +53,7 @@ list_bucket:
 
 # Docker Image 
 
+#build_container
 .PHONY: push_docker_image
 push_docker_image: init build_doc tag_doc login_aws push_doc
 
@@ -71,3 +72,11 @@ login_aws:
 .PHONY: push_doc
 push_doc:
 	$(DOCKER_PUSH)
+
+#destroy_container
+.PHONY: destroy_docker_image
+destroy_docker_image: init destroy_doc
+
+.PHONY: destroy_doc
+destroy_doc:
+	$(DOCKER_DESTROY)

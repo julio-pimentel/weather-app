@@ -9,7 +9,10 @@ resource "aws_ecs_service" "ecs_service" {
   name = var.ecs_service_name
   cluster = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task.arn
-  desired_count = 1
+  desired_count = 3
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent = 150
+  health_check_grace_period_seconds = 60
   launch_type = "FARGATE"
   scheduling_strategy = "REPLICA"
 

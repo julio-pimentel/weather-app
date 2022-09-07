@@ -1,44 +1,36 @@
-variable "pub_cidr_id_1" {
-}
+#Private subnets
+variable "priv_cidr_id_a" {}
 
-variable "pub_cidr_id_2" {
-}
+variable "priv_cidr_id_b" {}
 
-variable "priv_cidr_id_1" {
-}
+#Public subnets
+variable "pub_cidr_id_a" {}
 
-variable "priv_cidr_id_2" {
-}
+variable "pub_cidr_id_b" {}
 
-variable "alb_tg_arn" {
-}
+#LB Target group
+variable "lb_tg_arn" {}
 
-variable "execution_role_arn" {
-}
+#ECS role 
+variable "execution_role_arn" {}
 
-variable "ecr_repo_uri" {
-}
+#ECS values 
+variable "ecs_cluster_name" {}
 
-variable "ecs_cluster_name" {
-}
+variable "ecs_service_name" {}
 
-variable "ecs_service_name" {
-}
+variable "ecs_tasks_sg_id" {}
 
-variable "ecs_tasks_sg" {
-}
+variable "ecs_task_family" {}
 
-variable "ecs_task_family" {
-}
+#ECR repo 
+variable "ecr_repository_url" {}
 
-variable "container_port" {
-}
+#Container values 
+variable "container_port" {}
 
-variable "container_cpu" {
-}
+variable "container_cpu" {}
 
-variable "container_memory" {
-}
+variable "container_memory" {}
 
-variable "container_name" {
-}
+variable "container_name" {}

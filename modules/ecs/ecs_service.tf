@@ -14,13 +14,13 @@ resource "aws_ecs_service" "ecs_service" {
   scheduling_strategy = "REPLICA"
 
   network_configuration {
-    security_groups  = [var.ecs_tasks_sg]
-    subnets = [var.priv_cidr_id_1, var.priv_cidr_id_2]
+    security_groups  = [var.ecs_tasks_sg_id]
+    subnets = [var.priv_cidr_id_a, var.priv_cidr_id_b]
     assign_public_ip = false
   }
 
   load_balancer {
-    target_group_arn = var.alb_tg_arn
+    target_group_arn = var.lb_tg_arn
     container_name   = "${var.container_name}"
     container_port   = var.container_port
   }

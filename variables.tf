@@ -1,79 +1,69 @@
-#S3 bucket
-variable "bucket" {
-  type        = string
-  description = "Specifies the name of an S3 Bucket"
-  default     = "weather-app-pimentel-bucket-app"
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Use tags to identify project resources"
-  default     = {}
-}
-
 #VPC 
-variable "vpc_id" {
-  default = "vpc-0e238da83f0d928f6"
+data "aws_ssm_parameter" "vpc_id" {
+  name  = "/${var.ssm_prefix}/infra/vpc/vpc_id"
 }
 
-
-#Public subnets
-variable "pub_cidr_id_1" {
-  default = "subnet-04afe9c2b6fa1ee93"
+#Private subnet
+data "aws_ssm_parameter" "priv_cidr_id_a" {
+  name  = "/${var.ssm_prefix}/infra/vpc/priv_cidr_id_a"
 }
 
-variable "pub_cidr_id_2" {
-  default = "subnet-0c481b787b399df51"
+data "aws_ssm_parameter" "priv_cidr_id_b" {
+  name  = "/${var.ssm_prefix}/infra/vpc/priv_cidr_id_b"
 }
 
-variable "pub_cidr_id_3" {
-  default = "subnet-0dc3d3632742237f5"
+data "aws_ssm_parameter" "priv_cidr_id_c" {
+  name  = "/${var.ssm_prefix}/infra/vpc/priv_cidr_id_c"
 }
 
-#Private subnets
-variable "priv_cidr_id_1" {
-  default = "subnet-09b4a12c843a6de60"
+#Public subnet
+data "aws_ssm_parameter" "pub_cidr_id_a" {
+  name  = "/${var.ssm_prefix}/infra/vpc/pub_cidr_id_a"
 }
 
-variable "priv_cidr_id_2" {
-  default = "subnet-0938cfd27acbe10ab"
+data "aws_ssm_parameter" "pub_cidr_id_b" {
+  name  = "/${var.ssm_prefix}/infra/vpc/pub_cidr_id_b"
 }
 
-variable "priv_cidr_id_3" {
-  default = "subnet-06fb9d2b1c7999815"
+data "aws_ssm_parameter" "pub_cidr_id_c" {
+  name  = "/${var.ssm_prefix}/infra/vpc/pub_cidr_id_c"
 }
 
-#Security groups
-variable "alb_sg_id" {
-  type = string
-  default = "sg-064e9fd7c459db204"
-}
-
-variable "ecs_tasks_sg_id" {
-  type = string
-  default = "sg-08dbf103e44d499ed"
+# Region and AZs 
+variable "aws_region" {
+  description = "Region where the project will be deployed"
+  type = string 
+  default = "us-east-1"
 }
 
 #ALB
-variable "alb_name" {
+variable "lb_name" {
   type = string
-  default = "weather-app-pimentel-alb"
+  default = "weather-app-pimentel-lb"
 }
 
-variable "alb_tg_name" {
+variable "lb_tg_name" {
   type = string
-  default = "alb-tg-weather-pimentel"
+  default = "weather-app-pimentel-lb-tg"
+}
+
+#Security groups
+data "aws_ssm_parameter" "lb_sg_id" {
+  name  = "/${var.ssm_prefix}/sg/lb_sg_id"
+}
+
+data "aws_ssm_parameter" "ecs_tasks_sg_id" {
+  name  = "/${var.ssm_prefix}/sg/ecs_tasks_sg_id"
 }
 
 #ECS
 variable "ecs_task_family" {
   type = string
-  default = "weather-app-fam-pimentel"
+  default = "weather-app-pimentel-fam"
 }
 
-variable "execution_role_arn" {
-  type = string
-  default = "arn:aws:iam::152848913167:role/julio-pimentel-EcsExecutionRole"
+data "aws_ssm_parameter" "ecs_task_execution_role_arn"{
+  name  = "/${var.ssm_prefix}/ecr/ecs_task_execution_role_arn"
 }
 
 variable "ecs_cluster_name" {
@@ -87,9 +77,8 @@ variable "ecs_service_name" {
 }
 
 #Docker container 
-variable "container_name" {
-  type = string
-  default = "weather-app"
+variable "container_port" {
+  default = 3000
 }
 
 variable "container_cpu" {
@@ -102,14 +91,14 @@ variable "container_memory" {
   default = "512"
 }
 
-variable "container_port" {
-  default = 3000
+variable "container_name" {
+  type = string
+  default = "weather-app"
 }
 
 #ECR
-variable "ecr_repo_uri" {
-  type = string
-  default = "152848913167.dkr.ecr.us-east-1.amazonaws.com/julio-pimentel-node-weather-app"
+data "aws_ssm_parameter" "ecr_repository_url" {
+  name  = "/${var.ssm_prefix}/ecr/ecr_repository_url"
 }
 
 

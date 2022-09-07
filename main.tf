@@ -1,40 +1,33 @@
-module "s3_bucket" {
-  source = "./modules/s3"
-  bucket = var.bucket
+module "lb" {
+  source = "./modules/lb"
 
-  tags = var.tags
-}
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  pub_cidr_id_a = data.aws_ssm_parameter.pub_cidr_id_a.value
+  pub_cidr_id_b = data.aws_ssm_parameter.pub_cidr_id_b.value
+  pub_cidr_id_c = data.aws_ssm_parameter.pub_cidr_id_c.value
 
-module "alb" {
-  source = "./modules/alb"
-
-  vpc_id = var.vpc_id
-  pub_cidr_id_1 = var.pub_cidr_id_1
-  pub_cidr_id_2 = var.pub_cidr_id_2
-  pub_cidr_id_3 = var.pub_cidr_id_3
-
-  alb_name = var.alb_name
-  alb_tg_name = var.alb_tg_name
-  alb_sg_id = var.alb_sg_id
+  lb_name = var.alb_name
+  lb_tg_name = var.alb_tg_name
+  lb_sg_id = data.aws_ssm_parameter.lb_sg_id.value
   container_port = var.container_port
 }
 
 module "ecs" {
   source  = "./modules/ecs"
 
-  pub_cidr_id_1 = var.pub_cidr_id_1
-  pub_cidr_id_2 = var.pub_cidr_id_2
+  pub_cidr_id_a = data.aws_ssm_parameter.pub_cidr_id_a.value
+  pub_cidr_id_b = data.aws_ssm_parameter.pub_cidr_id_b.value
 
-  priv_cidr_id_1 = var.priv_cidr_id_1
-  priv_cidr_id_2 = var.priv_cidr_id_2
+  priv_cidr_id_a = data.aws_ssm_parameter.priv_cidr_id_a.value
+  priv_cidr_id_b = data.aws_ssm_parameter.priv_cidr_id_b.value
 
-  alb_tg_arn = module.alb.alb_tg_arn
-  execution_role_arn = var.execution_role_arn
-  ecr_repo_uri = var.ecr_repo_uri
+  lb_tg_arn = module.lb.lb_tg_arn
+  execution_role_arn = data.aws_ssm_parameter.ecs_task_execution_role_arn.value
+  ecr_repository_url = data.aws_ssm_parameter.ecr_repository_url.value
 
   ecs_cluster_name = var.ecs_cluster_name
   ecs_service_name = var.ecs_service_name
-  ecs_tasks_sg = var.ecs_tasks_sg_id
+  ecs_tasks_sg_id = data.aws_ssm_parameter.ecs_tasks_sg_id.value
   ecs_task_family = var.ecs_task_family
   container_port = var.container_port
   container_cpu = var.container_cpu

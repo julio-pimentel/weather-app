@@ -1,10 +1,10 @@
 resource "aws_alb" "alb" {
   name = var.alb_name
-  internal = false
   load_balancer_type = "application"
   security_groups = [var.alb_sg_id]
   subnets = [var.pub_cidr_id_1, var.pub_cidr_id_2]
 
+  internal = false
   enable_deletion_protection = true
 
   tags = {
@@ -14,7 +14,7 @@ resource "aws_alb" "alb" {
 
 resource "aws_alb_target_group" "alb_tg" {
   name = var.alb_tg_name
-  port = 80
+  port = var.container_port
   protocol = "HTTP"
   vpc_id = var.vpc_id
   target_type = "ip"

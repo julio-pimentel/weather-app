@@ -25,7 +25,8 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.alb_tg_arn
     container_name   = "${var.container_name}"
-    container_port   = var.container_port
+    container_port   = 80
+    hostPort = var.container_port
   }
 
   lifecycle {

@@ -101,4 +101,9 @@ data "aws_ssm_parameter" "ecr_repository_url" {
   name  = "/${var.ssm_prefix}/ecr/ecr_repository_url"
 }
 
-
+# SSM parameter store 
+variable "ssm_prefix" {
+  description = "Prefix for SSM Parameter Store"
+  type = string
+  default = "weather-app-pimentel"
+}

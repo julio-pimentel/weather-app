@@ -6,8 +6,8 @@ module "lb" {
   pub_cidr_id_b = data.aws_ssm_parameter.pub_cidr_id_b.value
   pub_cidr_id_c = data.aws_ssm_parameter.pub_cidr_id_c.value
 
-  lb_name = var.alb_name
-  lb_tg_name = var.alb_tg_name
+  lb_name = var.lb_name
+  lb_tg_name = var.lb_tg_name
   lb_sg_id = data.aws_ssm_parameter.lb_sg_id.value
   container_port = var.container_port
 }

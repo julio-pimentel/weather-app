@@ -5,7 +5,7 @@ resource "aws_alb" "alb" {
   subnets = [var.pub_cidr_id_1, var.pub_cidr_id_2]
 
   internal = false
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Name = var.alb_name

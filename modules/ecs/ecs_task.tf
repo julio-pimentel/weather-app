@@ -10,7 +10,6 @@ resource "aws_ecs_task_definition" "ecs_task" {
   container_definitions = jsonencode([{
     name = "${var.container_name}",
     image = "${var.ecr_repo_uri}:1",
-    cpu = 0
 
     portMappings = [{
       protocol      = "tcp"

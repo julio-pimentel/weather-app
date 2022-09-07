@@ -1,6 +1,5 @@
 resource "aws_alb" "alb" {
   name = var.alb_name
-  internal = false
   load_balancer_type = "application"
   security_groups = [var.alb_sg_id]
   subnets = [var.pub_cidr_id_1, var.pub_cidr_id_2]

@@ -25,6 +25,9 @@ module "ecs" {
   pub_cidr_id_1 = var.pub_cidr_id_1
   pub_cidr_id_2 = var.pub_cidr_id_2
 
+  priv_cidr_id_1 = var.priv_cidr_id_1
+  priv_cidr_id_2 = var.priv_cidr_id_2
+
   alb_tg_arn = module.alb.alb_tg_arn
   execution_role_arn = var.execution_role_arn
   ecr_repo_uri = var.ecr_repo_uri

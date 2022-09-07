@@ -30,6 +30,19 @@ variable "pub_cidr_id_3" {
   default = "subnet-0dc3d3632742237f5"
 }
 
+#Private subnets
+variable "priv_cidr_id_1" {
+  default = "subnet-09b4a12c843a6de60"
+}
+
+variable "priv_cidr_id_2" {
+  default = "subnet-0938cfd27acbe10ab"
+}
+
+variable "priv_cidr_id_3" {
+  default = "subnet-06fb9d2b1c7999815"
+}
+
 #Security groups
 variable "alb_sg_id" {
   type = string

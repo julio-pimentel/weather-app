@@ -5,10 +5,7 @@ resource "aws_alb" "alb" {
   security_groups = [var.alb_sg_id]
   subnets = [var.pub_cidr_id_1, var.pub_cidr_id_2]
 
-<<<<<<< Updated upstream
-=======
   internal = false
->>>>>>> Stashed changes
   enable_deletion_protection = false
 
   tags = {

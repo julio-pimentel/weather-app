@@ -1,32 +1,7 @@
+# Weather-App Application repository
 
-
-# Pathways Dojo Infra Node Weather App Quick Starter
-
-This repository is used in conjunction with the Contino Infra Engineer to Cloud Engineer Pathway course delivered in Contini-U.
-
-It includes and supports the following functionality:
-* Dockerfile and docker-compose configuration for 3M based deployments
-* Makefile providing basic Terraform deployment functionality
-* GitHub workflows for supporting basic Terraform deploy and destroy functionality
-* Terraform IaC for the test deployment of an s3 bucket
-* Node Weather App - https://github.com/phattp/nodejs-weather-app
-
-<br> 
-
-## Getting Started
-This GitHub template should be used to create your own repository. Repository will need to be public if you are creating it in your personal GitHub account in order to support approval gates in GitHub actions. Configure the following to get started:
-* Clone your repository locally. It should have a branch named `master`.
-* Create a `destroy` branch in your GitHub repo. This will be used to trigger Terraform Destroy workflow during pull request from `master->destroy`.
-* Create an environment in your repository named `approval` to support GitHub Workflows, selecting `required reviewers` and adding yourself as an approver.
-* Update the `key` value in the `meta.tf` file replacing `<username>` with your username for the name of the Terraform state file.
-* Update the default bucket name in the `variable.tf` file to a something globally unique.
-* Create GitHub Secrets in your repository for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN` if using temporary credentials.
-* Push local changes to the GitHub repos master branch, which should trigger the Github deploy workflow, and deploy the s3 bucket. Remember to review tf plan and approve apply.
-* Create a pull request to merge master changes to destroy branch. Merge changes to trigger the Github destroy workflow deleting the s3 bucket. Remember to review the tf speculative plan and approve destroy.
-* You can list s3 bucket in the APAC Dev account by running `make list_bucket` locally within the repo clone, to check bucket creation and removal.
-
-
-Keep reading for in-depth details.
+This repository is used to deploy the weather-app in the Contino APAC AWS account. It requires the following aws credentials to be updated in Github Secrets before deploying this repo: `ACCOUNT_ID` `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`.
+This project should deployed after the infrastructure is setup. 
 
 <br> 
 
@@ -38,6 +13,17 @@ To run a simple aws command, ensure you have set your aws temporary credentials 
 
 ```
 make list_bucket
+```
+
+The weather-app requires a Docker Image in the ECR repository, the following command will push the latest weather-app-dockerfile. 
+
+```
+make push_docker_image
+```
+
+Destroying the Docker Image will be required to destroy the infrastructure. 
+```
+make destroy_docker_image
 ```
 
 Deploying Terraform environment locally - creates tfplan file during plan as input to apply. Apply is auto-approved.
@@ -64,12 +50,13 @@ The following workflows are provided in this repository. These are located under
 
 | Workflow | Description | Environments | Trigger
 |----------|-------------|--------------|--------|
+| build_cont.yml | One step workflow to push a Docker Image in a ECR Repository. | none | on.opush.branch [master] ||
 | main.yml | Two step workflow to run a Terraform Plan and Terraform Apply following manual approvals. | approval | on.push.branch [master] ||
 | destroy.yml | Two step workflow to run a speculative Terraform Destroy Plan and Terraform Destroy following manual approvals. | approval | on.push.branch [destroy] ||
 
 Note: Pushing to `master` branch will trigger Terraform (TF) deploy. You will also need to create a branch named `destroy` in your GitHub repository. Not required locally and only used for pull requests `master -> destroy` to trigger TF destroy workflow.
 
-Additionally, ONLY changes to the following files and paths will trigger a workflow.
+Additionally, changes to the following files and paths will trigger a the main workflow.
 
 ```
     paths:
@@ -81,35 +68,21 @@ Additionally, ONLY changes to the following files and paths will trigger a workf
       - '**.tf'
 ```
 
-<br>
+Finally, changes to the following files and paths will trigger a the build_cont workflow.
 
-### main.yml workflow
-![Main Workflow](images/main.yml_workflow.png)
-
-<br>
-
-### destroy.yml workflow
-![Destroy Workflow](images/destroy.yml_workflow.png)
-
-<br>
-
-Create an environment in your repository named `approval` to support GitHub Workflows, selecting `required reviewers` adding yourself as an approver.
-
-<br> 
-
-![GitHub Environment](images/github_environment.png)
-
-<br> 
-
-## GitHub Secrets
-Create GitHub Secrets in your repository for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN` if using temporary credentials. ONLY `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` required if you have configured an IAM user with programmatic access.
+```
+    paths:
+      - 'weather-app-dockerfile'
+      - 'Makefile'
+      - '.github/workflows/build_cont'
+```
 
 <br>
 
 ## Terraform IaC
-The base Terraform environment has been setup to get you started. This includes `providers.tf`, `meta.tf`, `variables.tf` and `main.tf` which leverages the `s3.tf` module created in `modules/s3`. 
-
-The `modules` folder allows you to organise your `.tf` files are called by `main.tf`.
+The weather-app is based on the following Terraform modules: 
+* ECS: 1 ECS Task, 1 ECS Cluster, 1 ECS Service, and 3 Auto Scaling Policies. 
+* Load Balancer: 1 Load Balancer, 1 Load Balancer Target Group, and 1 Load Balancer Listener. 
 
 ### Inputs
 ---
@@ -119,9 +92,28 @@ The `modules` folder allows you to organise your `.tf` files are called by `main
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| bucket | S3 bucket name - must be globally unique | string | my-tf-test-bucket7717 | yes |
-| tags | Tags to be applied to AWS resources| map(string) | `null` | no |
-
+| vpc_id | VPC ID from Parameter Store | string | weather-app-pimentel/infra/vpc/vpc_id | yes |
+| priv_cidr_id_a | Private subnet A ID from Parameter Store | string | weather-app-pimentel/infra/vpc/priv_cidr_id_a | yes |
+| priv_cidr_id_b | Private subnet B ID from Parameter Store | string | weather-app-pimentel/infra/vpc/priv_cidr_id_b | yes |
+| priv_cidr_id_c | Private subnet C ID from Parameter Store | string | weather-app-pimentel/infra/vpc/priv_cidr_id_c | yes |
+| pub_cidr_id_a | Public subnet A ID from Parameter Store | string | weather-app-pimentel/infra/vpc/pub_cidr_id_a | yes |
+| pub_cidr_id_b | Public subnet B ID from Parameter Store | string | weather-app-pimentel/infra/vpc/pub_cidr_id_b | yes |
+| pub_cidr_id_c | Public subnet C ID from Parameter Store | string | weather-app-pimentel/infra/vpc/pub_cidr_id_c | yes |
+| aws_region | Region where the project will be deployed | string | us-east-1 | yes |
+| lb_name | Load Balancer name | string | weather-app-pimentel-lb | yes |
+| lb_tg_name | Load Balancer Target Group name | string | weather-app-pimentel-lb-tg | yes |
+| lb_sg_id | Security group for LB ID from Parameter Store | string | weather-app-pimentel/infra/sg/lb_sg_id | yes |
+| ecs_tasks_sg_id | Security group for ECS Task ID from Parameter Store | string | weather-app-pimentel/infra/sg/ecs_tasks_sg_id | yes |
+| ecs_task_family | ECS Task Family name | string | weather-app-pimentel-fam | yes |
+| ecs_task_execution_role_arn | ECS Task Execution Role ARN from Parameter Store | string | weather-app-pimentel/infra/ecr/ecs_task_execution_role_arn | yes |
+| ecs_cluster_name | ECS Cluster name | string | weather-app-cluster-pimentel | yes |
+| ecs_service_name | ECS Service name | string | weather-app-service-pimentel | yes |
+| ecr_repository_url | ECR Repository URL from Parameter Store | string | weather-app-pimentel/infra/ecr/ecr_repository_url | yes |
+| container_port | Container port | number | 3000 | yes |
+| container_cpu | Container CPU | string | 256 | yes |
+| container_memory | Container memory | string | 512 | yes |
+| container_name | Container name | string | weather-app | yes |
+| ssm_prefix | Prefix for SSM Parameter Store | string | weather-app-pimentel | yes | 
 
 </details>
 
@@ -135,8 +127,9 @@ The `modules` folder allows you to organise your `.tf` files are called by `main
 
 | Name | Description |
 |------|-------------|
-| bucket_name | The name of the S3 Bucket. | |
-| bucket_name_arn | The ARN of the S3 Bucket. | |
+| lb_dns_name | Load Balancer DNS name | |
+| lb_tg_arn | Load Balancer Target Group ARN | |
+| ecs_task_arn | ECS Task ARN | |
 
 
 </details>
@@ -151,7 +144,7 @@ terraform {
   required_version = ">= 0.13.0"
   backend "s3" {
     bucket = "pathways-dojo"
-    key    = <username>-tfstate
+    key    = julio-pimentel-tfstate-main
     region = "us-east-1"
   }
 }
@@ -184,5 +177,3 @@ Run this app in devlopment mode with command below and navigate to http://localh
 ```
 npm run dev
 ```
-
-Happy Hacking!

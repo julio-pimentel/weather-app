@@ -1,38 +1,31 @@
 #VPC 
 data "aws_ssm_parameter" "vpc_id" {
-  description = "VPC ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/vpc_id"
 }
 
 #Private subnet
 data "aws_ssm_parameter" "priv_cidr_id_a" {
-  description = "Private subnet A ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/priv_cidr_id_a"
 }
 
 data "aws_ssm_parameter" "priv_cidr_id_b" {
-  description = "Private subnet B ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/priv_cidr_id_b"
 }
 
 data "aws_ssm_parameter" "priv_cidr_id_c" {
-  description = "Private subnet C ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/priv_cidr_id_c"
 }
 
 #Public subnet
 data "aws_ssm_parameter" "pub_cidr_id_a" {
-  description = "Public subnet A ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/pub_cidr_id_a"
 }
 
 data "aws_ssm_parameter" "pub_cidr_id_b" {
-  description = "Public subnet B ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/pub_cidr_id_b"
 }
 
 data "aws_ssm_parameter" "pub_cidr_id_c" {
-  description = "Public subnet C ID from Parameter Store"
   name  = "/${var.ssm_prefix}/infra/vpc/pub_cidr_id_c"
 }
 
@@ -58,12 +51,10 @@ variable "lb_tg_name" {
 
 #Security groups
 data "aws_ssm_parameter" "lb_sg_id" {
-  description = "Security group for LB ID from Parameter Store"
   name  = "/${var.ssm_prefix}/sg/lb_sg_id"
 }
 
 data "aws_ssm_parameter" "ecs_tasks_sg_id" {
-  description = "Security group for ECS Task ID from Parameter Store"
   name  = "/${var.ssm_prefix}/sg/ecs_tasks_sg_id"
 }
 
@@ -75,7 +66,6 @@ variable "ecs_task_family" {
 }
 
 data "aws_ssm_parameter" "ecs_task_execution_role_arn"{
-  description = "ECS Task Execution Role ARN from Parameter Store"
   name  = "/${var.ssm_prefix}/ecr/ecs_task_execution_role_arn"
 }
 
@@ -93,7 +83,6 @@ variable "ecs_service_name" {
 
 #ECR
 data "aws_ssm_parameter" "ecr_repository_url" {
-  description = "ECR Repository URL from Parameter Store"
   name  = "/${var.ssm_prefix}/ecr/ecr_repository_url"
 }
 

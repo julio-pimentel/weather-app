@@ -33,7 +33,7 @@ data "aws_ssm_parameter" "pub_cidr_id_c" {
 variable "aws_region" {
   description = "Region where the project will be deployed"
   type = string 
-  default = "us-east-1"
+  default = "ap-southeast-2"
 }
 
 #ALB
